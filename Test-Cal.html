@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .calendar {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        .calendar th, .calendar td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .calendar th {
+            background-color: #f4f4f4;
+        }
+        .calendar td {
+            cursor: pointer;
+        }
+        .calendar td:hover {
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="monthYear"></h2>
+    <table class="calendar">
+        <thead>
+            <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+
+    <script>
+        function generateCalendar() {
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            document.getElementById("monthYear").innerText = 
+                date.toLocaleString('default', { month: 'long' }) + " " + year;
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let tableBody = document.getElementById("calendarBody");
+            tableBody.innerHTML = "";
+
+            let row = document.createElement("tr");
+            for (let i = 0; i < firstDay; i++) {
+                row.appendChild(document.createElement("td"));
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                let cell = document.createElement("td");
+                cell.innerText = day;
+                row.appendChild(cell);
+
+                if ((firstDay + day) % 7 === 0) {
+                    tableBody.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
+            tableBody.appendChild(row);
+        }
+
+        generateCalendar();
+    </script>
+</body>
+</html>
